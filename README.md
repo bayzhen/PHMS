@@ -6,3 +6,7 @@
 数据库名:phms  
   用户名:PHMS  
   密码：123456  
+如果建表建议把表的结构写在下面：  
+比如：  
+table: People  
+id: auto, name: varchar(50), role: varchar(50), age and so on......
