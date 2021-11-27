@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return render_template("index.html")
+    return render_template("login.html")
 
 @app.route('/page1')
 def page1():
@@ -16,4 +16,3 @@ def page2():
 
 if __name__ == '__main__':
     app.run()
-kjhfkfhjljl
