@@ -11,4 +11,3 @@
 table: People  
 id: auto, name: varchar(50), role: varchar(50), age and so on......
 注意格式：UTF-8
-ghjhgjhdhj
