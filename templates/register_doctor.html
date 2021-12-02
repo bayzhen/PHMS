@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Doctor register</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<!--  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>-->
+<!--  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>-->
+<!--  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
+<!--  <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>-->
+<!--  <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>-->
+<!--  <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>-->
+
+
+  <!-- 使用bootstrapValidator必须引入的js和css文件 -->
+  <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.css"/>
+  <link rel="stylesheet" href="/static/css/bootstrapValidator.css"/>
+  <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/vendor/bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrapValidator.js"></script>
+
+
+  <!-- 一个提示控件 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastrinit.js"></script>
+
+
+  <script type="text/javaScript">
+      $(function(){
+
+            /**
+             *下面就是bootstrapValidator的初始化
+             *定义你需要的哪些表单需要验证，验证什么内容
+             **/
+            $("#user").bootstrapValidator({
+                feedbackIcons: {//这里是用来对应三种不同状态时，在输入框后面添加的图标
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields:{//哪些字段需要验证，和html中的输入框，下拉框等等表单name属性所对应。
+                    username:{
+                        validators:{//从这里也可以容易的看出可以有多个验证信息
+                            notEmpty:{//非空验证
+                                message:"Please input username！！！" //提示信息，当你不写这里时它会自动的调用自带的提示信息，默认是英文，可导入language下的中文JS文件
+                            },
+                            stringLength: {//长度限制（中文字符也算一个）
+                                min: 4,
+                                max: 16,
+                                message: "The username can contain only 4 to 16 characters！！！"
+                            },
+
+                            threshold: 4,//有2字符以上才发送ajax请求
+                            remote: {//ajax验证。server result:{"valid",true or false}
+                                url: "/is_exist_doctor/",
+                                message: 'The username already exists. Please enter it again',
+                                delay: 1000,//ajax刷新的时间是1秒一次
+                                type: 'POST',
+                                    //自定义提交数据，默认值提交当前input value
+                                    data: function(validator) {
+                                        return {
+                                            username : $("input[name=username]").val()
+                                     };
+                                 }
+                            }
+
+                        }
+                    },
+                    password:{
+                        validators:{
+                            notEmpty:{
+                                message:"Please enter your password！！！"
+                            }
+                        }
+                    },
+                    confirmPassword:{
+                        validators:{
+                            notEmpty:{
+                                message:"Please confirm your password！！！"
+                            },
+                            identical: {//用来判断制定的字段和当前字段一致与否
+                                field: 'password',
+                                message: "The entered passwords are inconsistent！！！"
+                            }
+                        }
+                    },
+                    name:{
+                        validators:{
+                            notEmpty:{
+                                message:"Please input name！！！"
+                            },
+                            stringLength: {//长度限制（中文字符也算一个）
+                                min: 4,
+                                max: 50,
+                                message: "Names can be between 4 and 50 characters long！！！"
+                            }
+                        }
+                    },
+
+                    'sex':{
+                        validators:{
+                            notEmpty:{
+                                message:"Please input sex！！！"
+                            },
+                        }
+                    },
+
+
+                    workID:{
+                        validators:{
+                            notEmpty:{
+                                message:"WorkID cannot be empty"
+                            },
+                        }
+                    },
+                    department:{
+                        validators:{
+                            notEmpty:{
+                                message:"Department cannot be empty！！！"
+                            },
+                        }
+                    },
+                    phone:{
+                        validators:{
+                            notEmpty:{
+                                message:"Mobile phone number cannot be empty！！！"
+                            },
+                        }
+                    },
+
+                    age:{
+                        validators:{
+                            notEmpty:{
+                                message:"Age cannot be empty！！！"
+                            },
+                        }
+                    },
+
+                    major:{
+                        validators:{
+                            notEmpty:{
+                                message:"Major cannot be empty！！！"
+                            },
+                        }
+                    },
+
+                }
+            });
+
+        });
+
+</script>
+<style>
+.error{
+	color:red;
+}
+</style>
+
+</head>
+<body>
+
+
+
+<script type="text/javaScript">
+   register=function(){
+      $("#user").data('bootstrapValidator').validate();//相当于触发一次所有的验证
+      if($("#user").data('bootstrapValidator').isValid()){//判断验证是否已经通过
+              var form = $('#user')[0];
+              var formdata =new FormData(form);
+              $.ajax({
+                      type: "POST",
+                      url:"/register_doctor/",
+                      data: formdata,
+                      async: false,
+                      cache: false,
+                      contentType: false,
+                      processData: false,
+                      error: function(request) {
+                           alert("The username is already exist");
+                      },
+                      success: function(data) {
+                           alert('Register Succeed');
+                      }
+                   });
+      }
+
+
+   }
+
+
+    resetFrom=function(){
+        $('#user').data("bootstrapValidator").resetForm();
+    }
+    gotoIndex=function(){
+        location.href='http://101.35.143.22:3210/';
+    }
+</script>
+
+
+<div class="container">
+  <h2>Register Doctor</h2>
+  <form id="user">
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" >
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Enter Password">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+    </div>
+
+    <div class="form-group">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" class="custom-control-input" id="customRadio1" name="sex" value="M">
+          <label class="custom-control-label" for="customRadio1">M</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" class="custom-control-input" id="customRadio2" name="sex" value="F">
+          <label class="custom-control-label" for="customRadio2">F</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+      <label for="workID">Work ID:</label>
+      <input type="text" class="form-control" id="workID" name="workID" placeholder="Enter workID">
+    </div>
+    <div class="form-group">
+      <label for="department">Department:</label>
+      <input type="text" class="form-control" id="department" name="department" placeholder="Enter department">
+    </div>
+
+    <div class="form-group">
+      <label for="age">Age:</label>
+      <input type="number" class="form-control" id="age" name="age" placeholder="Enter age">
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
+    </div>
+
+    <div class="form-group">
+      <label for="major">Major:</label>
+      <input type="text" class="form-control" id="major" name="major" placeholder="Enter major">
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="register()">Submit</button>
+    <button type="reset" class="btn btn-primary" onclick="resetFrom()">Reset</button>
+    <button type="button" class="btn btn-primary" onclick="gotoIndex()">Return Login</button>
+  </form>
+</div>
+
+</body>
+</html>

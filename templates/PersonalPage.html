@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>assignment</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">PHMS</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li ><a href="#">Dashboard </a></li>
+        <li><a href="#">Account Setting</a></li>
+        <li><a href="#">Help</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tours <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Introduction Tour</a></li>
+            <li><a href="#">Project Organisation</a></li>
+            <li><a href="#">Task Assignment</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Access Permissions</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Use file version</a></li>
+          </ul>
+        </li>
+      </ul>
+       <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">username</a></li>
+        <li><a href="#">logout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+
+  </div><!-- /.container-fluid -->
+</nav>
+<center>
+    <form action="/test4" method="get">
+        <table align="center">
+            <div style="padding-top:15px;" >
+
+                Name:<input type="text" name="name">&nbsp;&nbsp;&nbsp;
+
+            <input type="submit" value="Submit"></div>
+  </table>
+
+    </form>
+<table class="table table-bordered" border="1" >
+    <div style="padding-top:15px;" >
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Age</th>
+        <th>Heart Rate(Second/minute)</th>
+        <th>Blood Pressure(mmHg)</th>
+        <th>Blood Sugar(mmol/L)</th>
+        <th>Cholesterol(mmol/L)</th>
+        <th>Glycerin Trihydrate(mmol/L)</th>
+        <th>Uric Acid(μmol/L)</th>
+        <th>Platelet(L)</th>
+        <th>Glutopropase(u/L)</th>
+
+    </tr>
+    {% for k,v in data_dict.items() %}
+            <tr>
+
+                <td>{{ v[0] }}</td>
+                <td>{{ v[1] }}</td>
+                <td>{{ v[11] }}</td>
+                <td>{{ v[10] }}</td>
+                <td>{{ v[5] }}</td>
+                <td>{{ v[2] }}</td>
+                <td>{{ v[3] }}</td>
+                <td>{{ v[4] }}</td>
+                <td>{{ v[6] }}</td>
+                <td>{{ v[7] }}</td>
+                <td>{{ v[8] }}</td>
+                <td>{{ v[9] }}</td>
+            </tr>
+     {% endfor %}
+    </div>
+</table>
+
+</center>
+</body>
+</html>

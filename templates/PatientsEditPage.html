@@ -1,0 +1,57 @@
+{% block title %}{% endblock %}
+
+{% block page_content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>assignment</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<form action="/test2" method="get">
+    <table align="center">
+        <tr>
+            <td>Name: </td>
+            <td><input type="text" name="Name"></td></tr>
+        <tr>
+            <td>Age: </td>
+            <td><input type="text" name="Age"></td></tr>
+        <tr>
+            <td>Heart Rate(Second/minute): </td>
+            <td><input type="text" name="HeartRate"></td></tr>
+        <tr>
+            <td>Blood Pressure(mmHg): </td>
+            <td><input type="text" name="BloodPressure" ></td></tr>
+        <tr>
+            <td>Blood Sugar(mmol/L): </td>
+            <td><input type="text" name="BloodSugar"></td></tr>
+        <tr>
+            <td>Cholesterol(mmol/L): </td>
+            <td><input type="text" name="Cholesterol" ></td></tr>
+        <tr>
+            <td>Glycerin Trihydrate(mmol/L): </td>
+            <td><input type="text" name="GlycerinTrihydrate"></td></tr>
+        <tr>
+            <td>Uric Acid(μmol/L): </td>
+            <td><input type="text" name="UricAcid"></td></tr>
+        <tr>
+            <td>Platelet(L): </td>
+            <td><input type="text" name="Platelet"></td></tr>
+        <tr>
+            <td>Glutopropase(u/L): </td>
+            <td><input type="text" name="Glutopropase"></td></tr>
+        <tr>
+            <td><input type="submit" value="update"></td>
+        </tr>
+
+    </table>
+</form>
+
+
+</body>
+
+</html>
+{% endblock %}
