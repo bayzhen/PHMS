@@ -40,30 +40,27 @@
 				<span class="icon-bar"></span>
 			</a>
 
-			<a class="brand" href="./">Adminia Admin</a>
+			<a class="brand">Personal Health Monitoring System</a>
 
 			<div class="nav-collapse">
 
 				<ul class="nav pull-right">
-					<li>
-						<a href="#"><span class="badge badge-warning">7</span></a>
-					</li>
 
 					<li class="divider-vertical"></li>
 
 					<li class="dropdown">
 
 						<a data-toggle="dropdown" class="dropdown-toggle " href="#">
-							Rod Howard <b class="caret"></b>
+							Option <b class="caret"></b>
 						</a>
 
 						<ul class="dropdown-menu">
 							<li>
-								<a href="./account.html"><i class="icon-user"></i> Account Setting  </a>
+								<i class="icon-user"></i> Account Setting  </a>
 							</li>
 
 							<li>
-								<a href="./change_password.html"><i class="icon-lock"></i> Change Password</a>
+								<i class="icon-lock"></i> Change Password</a>
 							</li>
 
 							<li class="divider"></li>
@@ -102,12 +99,12 @@
 
 					<div class="account-details">
 
-						<span class="account-name">Rod Howard</span>
+						<span class="account-name">Test user 001</span>
 
-						<span class="account-role">Administrator</span>
+						<span class="account-role">Test user</span>
 
 						<span class="account-actions">
-							<a href="javascript:;">Profile</a> |
+							<a href="javascript:;">Profile</a>
 
 							<a href="javascript:;">Edit Settings</a>
 						</span>
@@ -120,53 +117,53 @@
 
 				<ul id="main-nav" class="nav nav-tabs nav-stacked">
 
-					<li class="active">
-						<a href="./">
-							<i class="icon-home"></i>
-							Dashboard
-						</a>
-					</li>
-
-					<li>
-						<a href="./faq.html">
+                    <li>
+						<a href="/PersonalPage">
 							<i class="icon-pushpin"></i>
-							FAQ
+							Vital signs
 						</a>
 					</li>
 
 					<li>
-						<a href="./plans.html">
-							<i class="icon-th-list"></i>
-							Pricing Plans
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Medication
 						</a>
 					</li>
 
 					<li>
-						<a href="./grid.html">
-							<i class="icon-th-large"></i>
-							Grid Layout
-							<span class="label label-warning pull-right">5</span>
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Diet
+{#							<span class="label label-warning pull-right">5</span>#}
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="/NoteHome">
+							<i class="icon-pushpin"></i>
+							Notes
 						</a>
 					</li>
 
 					<li>
-						<a href="./charts.html">
-							<i class="icon-signal"></i>
-							Charts
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Search
 						</a>
 					</li>
 
 					<li>
-						<a href="./account.html">
-							<i class="icon-user"></i>
-							User Account
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Appointments
 						</a>
 					</li>
 
 					<li>
-						<a href="./login.html">
-							<i class="icon-lock"></i>
-							Login
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Communication
 						</a>
 					</li>
 
@@ -175,7 +172,7 @@
 				<hr />
 
 				<div class="sidebar-extra">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
+					<p>Allow individual to keep their favorite recipes, diet descriptions, health articles, or general notes in this system.</p>
 				</div> <!-- .sidebar-extra -->
 
 				<br />
@@ -188,66 +185,53 @@
 
 				<h1 class="page-title">
 					<i class="icon-home"></i>
-					Dashboard
+					Notes
 				</h1>
 
 				<div class="stat-container">
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>564</span>
-							Completed Sales
+							<span>2</span>
+{#                            改成数据库中的数据#}
+							Favorite Recipes
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>423</span>
-							Pending Sales
+							<span>1</span>
+							Diet Descriptions
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>96</span>
-							Returned Sales
+							<span>5</span>
+							Health Articles
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
 
 					<div class="stat-holder">
 						<div class="stat">
 							<span>2</span>
-							Chargebacks
+							General Notes
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
 
 				</div> <!-- /stat-container -->
 
-				<div class="widget">
-
-					<div class="widget-header">
-						<i class="icon-signal"></i>
-						<h3>Area Chart</h3>
-					</div> <!-- /widget-header -->
-
-					<div class="widget-content">
-						<div id="bar-chart" class="chart-holder"></div> <!-- /bar-chart -->
-					</div> <!-- /widget-content -->
-
-				</div> <!-- /widget -->
-
-
-
 				<div class="widget widget-table">
 
 					<div class="widget-header">
 						<i class="icon-th-list"></i>
-						<h3>Table</h3>
+						<h3>Favorite Recipes</h3>
 					</div> <!-- /widget-header -->
 
 					<div class="widget-content">
 
 						<table class="table table-striped table-bordered">
+{#                            从数据库中读的数据#}
 							<thead>
 								<tr>
 									<th>#</th>
@@ -387,8 +371,18 @@
 
 				</div> <!-- /widget -->
 
+                <div class="widget">
 
+					<div class="widget-header">
+						<i class="icon-signal"></i>
+						<h3>Health Articles</h3>
+					</div> <!-- /widget-header -->
 
+					<div class="widget-content" >
+                        <iframe src= http://101.35.143.22:3210/ width=800px scrolling=yes frameborder=0></iframe>
+					</div> <!-- /widget-content -->
+
+				</div> <!-- /widget -->
 
 				<div class="row">
 
@@ -397,7 +391,7 @@
 						<div class="widget">
 
 							<div class="widget-header">
-								<h3>5 Column</h3>
+								<h3>Diet Descriptions</h3>
 							</div> <!-- /widget-header -->
 
 							<div class="widget-content">
@@ -413,7 +407,7 @@
 						<div class="widget">
 
 							<div class="widget-header">
-								<h3>4 Column</h3>
+								<h3>General Notes</h3>
 							</div> <!-- /widget-header -->
 
 							<div class="widget-content">
@@ -439,7 +433,7 @@
 
 	<div class="container">
 		<hr />
-		<p>&copy; 2012 Go Ideate.</p>
+		<p>Team 1 Personal Health Monitoring System (PHMS)</p>
 	</div> <!-- /container -->
 
 </div> <!-- /footer -->
