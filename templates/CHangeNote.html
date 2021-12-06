@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ChangeNote</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <link href="./../static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./../static/css/bootstrap-responsive.min.css" rel="stylesheet" />
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet" />
+    <link href="./../static/css/font-awesome.css" rel="stylesheet" />
+
+    <link href="./../static/css/adminia.css" rel="stylesheet" />
+    <link href="./../static/css/adminia-responsive.css" rel="stylesheet" />
+
+    <link href="./../static/css/pages/dashboard.css" rel="stylesheet" />
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+      <script src="./../static/js/jquery.js"></script>
+  <script type="text/javascript">
+
+      function upbut() {
+            var tbody = document.getElementById("recipeForm");
+            var trs = tbody.getElementsByTagName("tr");
+            var s = "";
+            console.log(trs.length);
+            for(var i=0;i<trs.length;i++) {
+                var id = trs[i].getElementsByTagName("td")[6].innerHTML;
+                var picture = document.getElementsByName("Picture")[i].value;
+                var name = document.getElementsByName("Name")[i].value;
+                var quantity = document.getElementsByName("Quantity")[i].value;
+                var description = document.getElementsByName("Description")[i].value;
+                s +=  id + "{" +picture+"{"+  name+"{"+  quantity+"{"+  description + "}" ;
+            }
+
+            s=s.substring(0,s.length-1);
+            return s
+      }
+
+      function addbut() {
+            var tbody = document.getElementById("recipeAddForm");
+            var trs = tbody.getElementsByTagName("tr");
+            var s = "";
+            for(var i=0;i<trs.length;i++) {
+                var picture = document.getElementsByName("PictureAdd")[0].value;
+                var name = document.getElementsByName("NameAdd")[0].value;
+                var quantity = document.getElementsByName("QuantityAdd")[0].value;
+                var description = document.getElementsByName("DescriptionAdd")[0].value;
+                s += picture + "{" + name + "{" + quantity + "{" + description;
+            }
+            return s
+      }
+
+        function debut(btn) {
+          var tr = btn.parentNode.parentNode;
+          {#var name = document.getElementsByName("Name")[i].value;#}
+          var id = tr.getElementsByTagName("td")[6].innerHTML;
+          return id
+        }
+
+      function upnotebut() {
+            var s = "";
+            var name = document.getElementsByName("HealthArticle")[0].value;
+            var quantity = document.getElementsByName("Descriptions")[0].value;
+            var description = document.getElementsByName("GeneralNote")[0].value;
+            s +=name + "{" + quantity + "{" + description;
+            return s
+      }
+
+      $(document).on('click', '.up_note_but', function () {
+        var a = upnotebut();
+        console.log(a)
+            $.get('/updateNote?message=' + a, function (res) {
+                if (res === "ok") {
+                    alert("update success!")
+                    window.location.reload()
+                }
+            })
+       });
+
+      $(document).on('click', '.add_but', function () {
+        var a = addbut();
+        console.log(a)
+            $.get('/addRecipe?message=' + a, function (res) {
+                if (res === "ok") {
+                    alert("add success!")
+                    window.location.reload()
+                }
+            })
+       });
+
+      $(document).on('click', '.up_but', function () {
+        var a = upbut();
+        console.log(a)
+            $.get('/updateRecipe?message=' + a, function (res) {
+                if (res === "ok") {
+                    alert("update success!")
+                    window.location.reload()
+                }
+            })
+       });
+
+      $(document).on('click', '.de_but', function () {
+        var a = debut(this);
+        console.log(a)
+            $.get('/deleteRecipe?message=' + a, function (res) {
+                if (res === "ok") {
+                    alert("delete success!")
+                    window.location.reload()
+                }
+            })
+       });
+  </script>
+
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+
+	<div class="navbar-inner">
+
+		<div class="container">
+
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+
+			<a class="brand">Personal Health Monitoring System</a>
+
+			<div class="nav-collapse">
+
+				<ul class="nav pull-right">
+
+					<li class="divider-vertical"></li>
+
+					<li class="dropdown">
+
+						<a data-toggle="dropdown" class="dropdown-toggle " href="#">
+							Operation <b class="caret"></b>
+						</a>
+
+						<ul class="dropdown-menu">
+							<li>
+								<i class="icon-user"></i> Account Setting  </a>
+							</li>
+
+							<li>
+								<i class="icon-lock"></i> Change Password</a>
+							</li>
+
+							<li class="divider"></li>
+
+							<li>
+								<a href="./"><i class="icon-off"></i> Logout</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+			</div> <!-- /nav-collapse -->
+
+		</div> <!-- /container -->
+
+	</div> <!-- /navbar-inner -->
+
+</div> <!-- /navbar -->
+
+
+
+
+<div id="content">
+
+	<div class="container">
+
+		<div class="row">
+
+			<div class="span3">
+
+				<div class="account-container">
+
+					<div class="account-avatar">
+						<img src="../static/img/headshot.jpg" alt="" class="thumbnail" />
+					</div> <!-- /account-avatar -->
+
+					<div class="account-details">
+
+						<span class="account-name">Test user 001</span>
+
+						<span class="account-role">Test user</span>
+
+						<span class="account-actions">
+							<a href="javascript:;">Profile</a>
+
+							<a href="javascript:;">Edit Settings</a>
+						</span>
+
+					</div> <!-- /account-details -->
+
+				</div> <!-- /account-container -->
+
+				<hr />
+
+				<ul id="main-nav" class="nav nav-tabs nav-stacked">
+
+                    <li>
+						<a href="/PersonalPage">
+							<i class="icon-pushpin"></i>
+							Vital signs
+						</a>
+					</li>
+
+					<li>
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Medication
+						</a>
+					</li>
+
+					<li>
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Diet
+{#							<span class="label label-warning pull-right">5</span>#}
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="/Notehome">
+							<i class="icon-pushpin"></i>
+							Notes
+						</a>
+					</li>
+
+					<li>
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Search
+						</a>
+					</li>
+
+					<li>
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Appointments
+						</a>
+					</li>
+
+					<li>
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Communication
+						</a>
+					</li>
+
+				</ul>
+
+				<hr />
+
+				<div class="sidebar-extra">
+					<p>Allow individual to keep their favorite recipes, diet descriptions, health articles, or general notes in this system.</p>
+				</div> <!-- .sidebar-extra -->
+
+				<br />
+
+			</div> <!-- /span3 -->
+
+
+
+			<div class="span9">
+
+				<h1 class="page-title">
+					<i class="icon-home"></i>
+					Notes
+				</h1>
+
+				<div class="stat-container">
+
+					<div class="stat-holder">
+						<div class="stat">
+							<span>{{recipe_number}}</span>
+{#                            改成数据库中的数据#}
+							Favorite Recipes
+						</div> <!-- /stat -->
+					</div> <!-- /stat-holder -->
+
+					<div class="stat-holder">
+						<div class="stat">
+							<span>1</span>
+							Diet Descriptions
+						</div> <!-- /stat -->
+					</div> <!-- /stat-holder -->
+
+					<div class="stat-holder">
+						<div class="stat">
+							<span>1</span>
+							Health Articles
+						</div> <!-- /stat -->
+					</div> <!-- /stat-holder -->
+
+					<div class="stat-holder">
+						<div class="stat">
+							<span>1</span>
+							General Notes
+						</div> <!-- /stat -->
+					</div> <!-- /stat-holder -->
+
+				</div> <!-- /stat-container -->
+
+				<div class="widget widget-table">
+
+					<div class="widget-header">
+						<i class="icon-th-list"></i>
+						<h3>Recipe Update&Delete</h3>
+                        <input type="submit" value="Update" class="up_but" style="float:right;margin: 4px;"/>
+
+					</div> <!-- /widget-header -->
+
+					<div class="widget-content">
+
+						<table class="table table-striped table-bordered">
+{#                            从数据库中读的数据#}
+							<thead>
+								<tr>
+									<th>#</th>
+									<th style="width: 10%">Picture</th>
+									<th style="width: 17%">Name</th>
+									<th style="width: 18%">Quantity</th>
+									<th style="width: 51%">Description</th>
+                                    <th style="width: 4%">Operation</th>
+								</tr>
+							</thead>
+
+
+							<tbody id="recipeForm">
+                                {% for i in shu %}
+                                    <tr>
+                                        <td>{{ i }}</td>
+                                        <td><input type="text" name="Picture" value="{{ recipe_result[i-1][1] }}" style="width: 95%" /></td>
+                                        <td><input type="text" name="Name" value="{{ recipe_result[i-1][2] }}" style="width: 95%" /></td>
+                                        <td><input type="text" name="Quantity" value="{{ recipe_result[i-1][3] }}" style="width: 95%" /></td>
+                                        <td><input type="text" name="Description" value="{{ recipe_result[i-1][4] }}" style="width: 95%" /></td>
+                                        <td><input type="submit" value="Delete" class="de_but" /></td>
+                                        <td style="display: none">{{ recipe_result[i-1][0] }}</td>
+                                    </tr>
+                                {% endfor %}
+							</tbody>
+
+						</table>
+
+					</div> <!-- /widget-content -->
+
+				</div> <!-- /widget -->
+
+                <div class="widget widget-table">
+
+					<div class="widget-header">
+						<i class="icon-th-list"></i>
+						<h3>Add</h3>
+                        <input type="submit" value="Add" class="add_but" style="float:right;margin: 4px;"/>
+
+					</div> <!-- /widget-header -->
+
+					<div class="widget-content">
+
+						<table class="table table-striped table-bordered">
+{#                            从数据库中读的数据#}
+							<thead>
+								<tr>
+									<th style="width: 10%">Picture</th>
+									<th style="width: 17%">Name</th>
+									<th style="width: 18%">Quantity</th>
+									<th style="width: 51%">Description</th>
+								</tr>
+							</thead>
+
+
+							<tbody id="recipeAddForm">
+                                    <tr>
+                                        <td><input type="text" name="PictureAdd"  style="width: 95%" /></td>
+                                        <td><input type="text" name="NameAdd"  style="width: 95%" /></td>
+                                        <td><input type="text" name="QuantityAdd"  style="width: 95%" /></td>
+                                        <td><input type="text" name="DescriptionAdd"  style="width: 95%" /></td>
+                                    </tr>
+							</tbody>
+
+						</table>
+
+					</div> <!-- /widget-content -->
+
+				</div> <!-- /widget -->
+
+                <div class="widget">
+
+					<div class="widget-header">
+						<i class="icon-signal"></i>
+						<h3>Note Update</h3>
+                        <input type="submit" value="Update" class="up_note_but" style="float:right;margin: 4px;"/>
+					</div> <!-- /widget-header -->
+
+					<div class="widget-content" >
+
+                        <table class="table table-striped table-bordered">
+                            <tbody id="noteUpdateForm">
+
+                                <tr>
+                                    <td style="width: 18%">Health Article</td>
+                                    <td><input type="text" name="HealthArticle" value="{{ note_result[0][4] }}" style="width: 97%" /></td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width: 18%">Diet Descriptions</td>
+                                    <td><input type="text" name="Descriptions" value="{{ note_result[0][3] }}" style="width: 97%" /></td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width: 18%">General Notes</td>
+                                    <td><input type="text" name="GeneralNote" value="{{ note_result[0][5] }}" style="width: 97%" /></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+					</div> <!-- /widget-content -->
+
+				</div> <!-- /widget -->
+
+			</div> <!-- /span9 -->
+
+
+		</div> <!-- /row -->
+
+	</div> <!-- /container -->
+
+</div> <!-- /content -->
+
+
+<div id="footer">
+
+	<div class="container">
+		<hr />
+		<p>Team 1 Personal Health Monitoring System (PHMS)</p>
+	</div> <!-- /container -->
+
+</div> <!-- /footer -->
+
+
+
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="./../static/js/jquery-1.7.2.min.js"></script>
+<script src="./../static/js/excanvas.min.js"></script>
+<script src="./../static/js/jquery.flot.js"></script>
+<script src="./../static/js/jquery.flot.pie.js"></script>
+<script src="./../static/js/jquery.flot.orderBars.js"></script>
+<script src="./../static/js/jquery.flot.resize.js"></script>
+
+
+<script src="./../static/js/bootstrap.js"></script>
+<script src="./../static/js/charts/bar.js"></script>
+
+  </body>
+</html>

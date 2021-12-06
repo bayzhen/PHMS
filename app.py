@@ -1,4 +1,5 @@
 import os
+import pymysql
 
 from flask import Flask, render_template, request, session, jsonify
 
@@ -7,6 +8,14 @@ from db import connmysql
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 DB = connmysql(user="PHMS", password="123456", database="phms")
+config = {'host': '101.35.143.22',
+          'port': 3306,
+          'user': 'PHMS',
+          'password': '123456',
+          'charset': 'utf8',
+          'db': 'phms',
+          'autocommit': True
+          }
 
 
 @app.route('/')
@@ -61,7 +70,7 @@ def register():
     email = request.values.get('email')
 
     sql = "insert into patient(username,password,name,gender,height,weight,age,phoneNum,job,email) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');" % (
-    username, password, name, gender, height, weight, age, phoneNum, job, email)
+        username, password, name, gender, height, weight, age, phoneNum, job, email)
     count_select = DB.update(sql)
     return jsonify('OK')
 
@@ -106,7 +115,7 @@ def register_doctor():
     email = request.values.get('email')
 
     sql = "insert into doctor(username,password,name,gender,workID,department,age,phoneNum,major,email) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');" % (
-    username, password, name, gender, workID, department, age, phoneNum, major, email)
+        username, password, name, gender, workID, department, age, phoneNum, major, email)
     count_select = DB.update(sql)
     return jsonify('OK')
 
@@ -156,7 +165,8 @@ def test2():
     Platelet = request.args.get("Platelet")
     Glutopropase = request.args.get("Glutopropase")
     sql = "update patients set Age='%s', HeartRate='%s' ,BloodPressure='%s', BloodSugar='%s',Cholesterol='%s' ,GlycerinTrihydrate='%s',UricAcid='%s',Platelet='%s', Glutopropase='%s' where Name='%s';" % (
-    age, HeartRate, BloodPressure, BloodSugar, Cholesterol, GlycerinTrihydrate, UricAcid, Platelet, Glutopropase, name)
+        age, HeartRate, BloodPressure, BloodSugar, Cholesterol, GlycerinTrihydrate, UricAcid, Platelet, Glutopropase,
+        name)
     DB.update(sql)
 
     sql = "select * from patients;"
@@ -197,7 +207,123 @@ def test4():
 
 @app.route('/Notehome')
 def Notehome():
-    return render_template('NoteHome.html')
+    conn = pymysql.connect(**config)
+    cur = conn.cursor()
+    sql = "SELECT * FROM `recipe` "
+    cur.execute(sql)
+    recipe_result = cur.fetchall()
+    recipe_number = len(recipe_result)
+    shu = []
+    for i in range(recipe_number):
+        shu.append(i + 1)
+    print(recipe_result)
+    sql = "SELECT * FROM `note` "
+    cur.execute(sql)
+    note_result = cur.fetchall()
+    print(note_result)
+    conn.close()
+    return render_template('NoteHome.html', recipe_result=recipe_result, recipe_number=recipe_number,
+                           note_result=note_result, shu=shu)
+
+
+@app.route('/HealthArticle1')
+def HealthArticle1():
+    return render_template('HealthArticle1.html')
+
+
+@app.route('/HealthArticle2')
+def HealthArticle2():
+    return render_template('HealthArticle2.html')
+
+
+@app.route('/ChangeNote')
+def ChangeNote():
+    conn = pymysql.connect(**config)
+    cur = conn.cursor()
+    sql = "SELECT * FROM `recipe` "
+    cur.execute(sql)
+    recipe_result = cur.fetchall()
+    recipe_number = len(recipe_result)
+    shu = []
+    for i in range(recipe_number):
+        shu.append(i+1)
+    print(recipe_result)
+    sql = "SELECT * FROM `note` "
+    cur.execute(sql)
+    note_result = cur.fetchall()
+    print(note_result)
+    conn.close()
+    return render_template('ChangeNote.html', recipe_result=recipe_result, recipe_number=recipe_number,
+                           note_result=note_result, shu=shu)
+
+
+@app.route('/updateRecipe')
+def updateRecipe():
+    message = request.args.get("message")
+    total = message.split("}")
+    recipeList = []
+    for i in range(len(total)):
+        recipe = total[i].split("{")
+        recipeList.append(recipe)
+    print(recipeList)
+    conn = pymysql.connect(**config)
+    cur = conn.cursor()
+    for i in range(len(recipeList)):
+        sql = "UPDATE `recipe` SET `picture`='%s',`name`='%s',`quantity`='%s',`description`='%s' WHERE `recipeID`='%s'" % (
+            recipeList[i][1], recipeList[i][2], recipeList[i][3], recipeList[i][4], recipeList[i][0])
+        print(sql)
+        cur.execute(sql)
+        conn.commit()
+    conn.close()
+    return "ok"
+
+
+@app.route('/deleteRecipe')
+def deleteRecipe():
+    message = request.args.get("message")
+    print(message)
+    conn = pymysql.connect(**config)
+    cur = conn.cursor()
+    sql = "DELETE FROM `recipe` WHERE `recipeID`= '%s'" % message
+    print(sql)
+    cur.execute(sql)
+    conn.commit()
+    conn.close()
+    return "ok"
+
+
+@app.route('/addRecipe')
+def addRecipe():
+    message = request.args.get("message")
+    print(message)
+    addmessage = message.split("{")
+    print(addmessage)
+    conn = pymysql.connect(**config)
+    cur = conn.cursor()
+    sql = "INSERT INTO `recipe` (`picture`,`name`,`quantity`,`description`)VALUES('%s','%s','%s','%s')" % (
+        addmessage[0], addmessage[1], addmessage[2], addmessage[3])
+    print(sql)
+    cur.execute(sql)
+    conn.commit()
+    conn.close()
+    return "ok"
+
+
+@app.route('/updateNote')
+def updateNote():
+    message = request.args.get("message")
+    print(message)
+    notemessage = message.split("{")
+    print(notemessage)
+    conn = pymysql.connect(**config)
+    cur = conn.cursor()
+    sql = "UPDATE `note` SET `healthArticle`='%s',`description`='%s',`generalNote`='%s' WHERE `noteId`=1" % (
+            notemessage[0], notemessage[1], notemessage[2])
+    print(sql)
+    cur.execute(sql)
+    conn.commit()
+    conn.close()
+    return "ok"
 
 
 if __name__ == '__main__':

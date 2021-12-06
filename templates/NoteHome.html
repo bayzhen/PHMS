@@ -51,7 +51,7 @@
 					<li class="dropdown">
 
 						<a data-toggle="dropdown" class="dropdown-toggle " href="#">
-							Option <b class="caret"></b>
+							Operation <b class="caret"></b>
 						</a>
 
 						<ul class="dropdown-menu">
@@ -60,7 +60,7 @@
 							</li>
 
 							<li>
-								<i class="icon-lock"></i> Change Password</a>
+								<a href="/ChangeNote"><i class="icon-lock"></i> Change Note</a>
 							</li>
 
 							<li class="divider"></li>
@@ -140,7 +140,7 @@
 					</li>
 
 					<li class="active">
-						<a href="/NoteHome">
+						<a href="/Notehome">
 							<i class="icon-pushpin"></i>
 							Notes
 						</a>
@@ -192,7 +192,7 @@
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>2</span>
+							<span>{{recipe_number}}</span>
 {#                            改成数据库中的数据#}
 							Favorite Recipes
 						</div> <!-- /stat -->
@@ -207,14 +207,14 @@
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>5</span>
+							<span>1</span>
 							Health Articles
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>2</span>
+							<span>1</span>
 							General Notes
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
@@ -235,136 +235,26 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>First Name</th>
-									<th>Last Name</th>
-									<th>Username</th>
-									<th>Company</th>
-									<th>&nbsp;</th>
+									<th style="width: 70px">Picture</th>
+									<th>Name</th>
+									<th>Quantity</th>
+									<th>Description</th>
 								</tr>
 							</thead>
+    {% for i in shu %}
 
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Michael</td>
-									<td>Jordan</td>
-									<td>@mjordan</td>
-									<td>Chicago Bulls</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
+                                <tr>
+									<td>{{ i }}</td>
+									<td><img src="../static/img/{{ recipe_result[i-1][1] }}" style="max-height: 30px" /></td>
+									<td>{{ recipe_result[i-1][2] }}</td>
+									<td>{{ recipe_result[i-1][3] }}</td>
+									<td>{{ recipe_result[i-1][4] }}</td>
 								</tr>
-								<tr>
-									<td>2</td>
-									<td>Magic</td>
-									<td>Johnson</td>
-									<td>@mjohnson</td>
-									<td>Los Angeles Lakers</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>Charles</td>
-									<td>Barkley</td>
-									<td>@cbarkley</td>
-									<td>Phoenix Suns</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>Karl</td>
-									<td>Malone</td>
-									<td>@kmalone</td>
-									<td>Utah Jazz</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>David</td>
-									<td>Robinson</td>
-									<td>@drobinson</td>
-									<td>San Antonio Spurs</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>6</td>
-									<td>Reggie</td>
-									<td>Miller</td>
-									<td>@rmiller</td>
-									<td>Indiana Pacers</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td>Clyde</td>
-									<td>Drexler</td>
-									<td>@cdrexler</td>
-									<td>Portland Trail Blazers</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>8</td>
-									<td>Hakeem</td>
-									<td>Olajuwon</td>
-									<td>@holajuwon</td>
-									<td>Houston Rockets</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
+
 							</tbody>
+    {% endfor %}
+
 						</table>
 
 					</div> <!-- /widget-content -->
@@ -379,7 +269,7 @@
 					</div> <!-- /widget-header -->
 
 					<div class="widget-content" >
-                        <iframe src= http://101.35.143.22:3210/ width=800px scrolling=yes frameborder=0></iframe>
+                        <iframe src= {{ note_result[0][4] }} width=800px height=400px scrolling=yes frameborder=0></iframe>
 					</div> <!-- /widget-content -->
 
 				</div> <!-- /widget -->
@@ -395,7 +285,7 @@
 							</div> <!-- /widget-header -->
 
 							<div class="widget-content">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+								<p >{{ note_result[0][3] }}</p>
 							</div> <!-- /widget-content -->
 
 						</div> <!-- /widget -->
@@ -411,7 +301,7 @@
 							</div> <!-- /widget-header -->
 
 							<div class="widget-content">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+								<p>{{ note_result[0][5] }}</p>
 							</div> <!-- /widget-content -->
 
 						</div> <!-- /widget -->
