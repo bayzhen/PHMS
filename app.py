@@ -205,7 +205,7 @@ def test4():
     return render_template('PersonalPage.html', data_dict=data_dict)
 
 
-@app.route('/Notehome')
+@app.route('/Notehome/')
 def Notehome():
     conn = pymysql.connect(**config)
     cur = conn.cursor()
@@ -226,17 +226,17 @@ def Notehome():
                            note_result=note_result, shu=shu)
 
 
-@app.route('/HealthArticle1')
+@app.route('/HealthArticle1/')
 def HealthArticle1():
     return render_template('HealthArticle1.html')
 
 
-@app.route('/HealthArticle2')
+@app.route('/HealthArticle2/')
 def HealthArticle2():
     return render_template('HealthArticle2.html')
 
 
-@app.route('/ChangeNote')
+@app.route('/ChangeNote/')
 def ChangeNote():
     conn = pymysql.connect(**config)
     cur = conn.cursor()
@@ -257,7 +257,7 @@ def ChangeNote():
                            note_result=note_result, shu=shu)
 
 
-@app.route('/updateRecipe')
+@app.route('/updateRecipe/')
 def updateRecipe():
     message = request.args.get("message")
     total = message.split("}")
@@ -278,7 +278,7 @@ def updateRecipe():
     return "ok"
 
 
-@app.route('/deleteRecipe')
+@app.route('/deleteRecipe/')
 def deleteRecipe():
     message = request.args.get("message")
     print(message)
@@ -292,7 +292,7 @@ def deleteRecipe():
     return "ok"
 
 
-@app.route('/addRecipe')
+@app.route('/addRecipe/')
 def addRecipe():
     message = request.args.get("message")
     print(message)
@@ -309,7 +309,7 @@ def addRecipe():
     return "ok"
 
 
-@app.route('/updateNote')
+@app.route('/updateNote/')
 def updateNote():
     message = request.args.get("message")
     print(message)
