@@ -1,9 +1,8 @@
 import os
 import pymysql
-
 from flask import Flask, render_template, request, session, jsonify
-
 from db import connmysql
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -324,6 +323,52 @@ def updateNote():
     conn.commit()
     conn.close()
     return "ok"
+
+
+def getHistoryWeight(patientId, recentDays):
+    sql = "select weight,date from weight_history where patientId=%d order by date limit %d" % (patientId, recentDays)
+    result = DB.select(sql)
+    data = []
+    for item in result:
+        data.append([str(item[1]).split(" ")[0], float(item[0])])
+    return data
+
+
+def getHistoryDietCalorie(patientId, recentDays=30):
+    sql = "select calorie,data from diet where patientId=%d order by date limit %d" % (patientId, recentDays)
+    result = DB.select(sql)
+    day_calorie_dict = {}
+    for item in result:
+        day = str(item[1]).split(" ")[0]
+        if day in day_calorie_dict:
+            day_calorie_dict[day] += float(item[0])
+        else:
+            day_calorie_dict.update({day: float(item[0])})
+    data = []
+    for key in day_calorie_dict:
+        data.append([key, day_calorie_dict[key]])
+    return data
+
+
+@app.route('/DietHome')
+def dietHome():
+    patient_id = 1
+    historyWeight = getHistoryWeight(patient_id, 30)
+    return render_template('DietHome.html')
+
+
+@app.route('/historyWeight')
+def historyWeight():
+    patient_id = 1
+    result = getHistoryWeight(patient_id, 30)
+    return json.dumps({"info": result})
+
+
+@app.route('/historyCalorie')
+def historyCalorie():
+    patient_id = 1
+    result = getHistoryDietCalorie(patient_id, 30)
+    return json.dumps({"info": result})
 
 
 if __name__ == '__main__':
