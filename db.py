@@ -14,7 +14,7 @@ class connmysql(object):
 
         return cls.obj  # 否则直接返回
 
-    def __init__(self, user, password, database, host="101.35.143.22", port=3306):
+    def __init__(self, user, password, database, host="127.0.0.1", port=3306):
         # 1. 链接数据库， 得到一个对象
         try:
             self.db = pymysql.connect(

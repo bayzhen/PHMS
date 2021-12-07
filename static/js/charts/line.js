@@ -1,26 +1,23 @@
 $(function () {
-
-
     $.getJSON('/historyWeight'
                 , function(info) {
 		console.log(info);
 
 		var plot = $.plot($("#line-chart"),
-           [ { data: info['info']}], {
+           [ { data: info['info'],color: "#3c8dbc"}], {
                series: {
                    lines: { show: true },
                    points: { show: true }
                },
 
-               grid: { hoverable: true, clickable: true },
+               grid: { hoverable: true, clickable: true ,borderWidth: 1,},
                yaxis : {
 			 	    	show:true,
 			 	        label: 'weight',
 			 	    },
-			   xaxis: {
+			   xaxis : {
 			 	    	show:true,
 			 	    	mode: "categories",
-	 	        		tickLength: 1,
 			 	    	label:'day'
 			 	    },
     	colors: ["#F90", "#3C4049", "#666", "#BBB"]

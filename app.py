@@ -1,4 +1,6 @@
 import os
+from itertools import chain
+
 import pymysql
 from flask import Flask, render_template, request, session, jsonify
 from db import connmysql
@@ -6,11 +8,11 @@ import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
-DB = connmysql(user="PHMS", password="123456", database="phms")
-config = {'host': '101.35.143.22',
+DB = connmysql(user="root", password="12345678", database="phms")
+config = {'host': '127.0.0.1',
           'port': 3306,
-          'user': 'PHMS',
-          'password': '123456',
+          'user': 'root',
+          'password': '12345678',
           'charset': 'utf8',
           'db': 'phms',
           'autocommit': True
@@ -328,14 +330,16 @@ def updateNote():
 def getHistoryWeight(patientId, recentDays):
     sql = "select weight,date from weight_history where patientId=%d order by date limit %d" % (patientId, recentDays)
     result = DB.select(sql)
-    data = []
+    x_data = []
+    y_data = []
     for item in result:
-        data.append([str(item[1]).split(" ")[0], float(item[0])])
-    return data
+        x_data.append(str(item[1]).split(" ")[0])
+        y_data.append(float(item[0]))
+    return x_data,y_data
 
 
 def getHistoryDietCalorie(patientId, recentDays=30):
-    sql = "select calorie,data from diet where patientId=%d order by date limit %d" % (patientId, recentDays)
+    sql = "select calorie,date from diet where patientId=%d order by date limit %d" % (patientId, recentDays)
     result = DB.select(sql)
     day_calorie_dict = {}
     for item in result:
@@ -344,31 +348,77 @@ def getHistoryDietCalorie(patientId, recentDays=30):
             day_calorie_dict[day] += float(item[0])
         else:
             day_calorie_dict.update({day: float(item[0])})
-    data = []
+    x_data = []
+    y_data = []
     for key in day_calorie_dict:
-        data.append([key, day_calorie_dict[key]])
+        x_data.append(key)
+        y_data.append(day_calorie_dict[key])
+    return x_data,y_data
+
+
+def getRecodeDays(patientId):
+    sql = "select date from diet where patientId=%d " % patientId
+    result = DB.select(sql)
+    days = []
+    for item in result:
+        day = str(item[0]).split(" ")[0]
+        if day in days:
+            continue
+        else:
+            days.append(day)
+    return len(days)
+
+
+def getMaxMinWeight(patientId):
+    sql = "select max(weight),min(weight),avg(weight) FROM weight_history where patientId=%d " % patientId
+    result = DB.select(sql)[0]
+    return round(float(result[0]), 2), round(float(result[1]), 2), round(float(result[2]), 2)
+
+
+def getAllDietRecord(patientId):
+    sql = "select dietId,foodName, intake, calorie, date from diet where patientId=%d order by date desc" % patientId
+    result = DB.select(sql)
+    data = []
+    for item in result:
+        data.append(list(item))
     return data
 
 
 @app.route('/DietHome')
 def dietHome():
     patient_id = 1
-    historyWeight = getHistoryWeight(patient_id, 30)
-    return render_template('DietHome.html')
+    record_days = getRecodeDays(patient_id)
+    max_weight, min_weight, avg_weight = getMaxMinWeight(patient_id)
+    diet_info = getAllDietRecord(patient_id)
+    info = {
+        "record_days": record_days,
+        'min_weight': min_weight,
+        "max_weight": max_weight,
+        "avg_weight": avg_weight,
+        "diet_info": diet_info
+    }
+    return render_template('DietHome.html', info=info)
 
 
 @app.route('/historyWeight')
 def historyWeight():
     patient_id = 1
-    result = getHistoryWeight(patient_id, 30)
-    return json.dumps({"info": result})
+    x_data,y_data = getHistoryWeight(patient_id, 30)
+    x_data1, y_data1 = getHistoryDietCalorie(patient_id, 30)
+    return json.dumps({"x_data": x_data,"y_data":y_data, "x_data1":x_data1, 'y_data1':y_data1 })
 
 
-@app.route('/historyCalorie')
-def historyCalorie():
-    patient_id = 1
-    result = getHistoryDietCalorie(patient_id, 30)
-    return json.dumps({"info": result})
+@app.route("/addDiet")
+def addDiet():
+    patientId = 1
+    foodName = request.args.get("food")
+    intake = request.args.get("intake")
+    date = request.args.get("time")
+    calorie = request.args.get("calorie")
+    sql = "insert into diet(patientId,foodName, intake, date, calorie) values (%d, '%s','%s','%s','%s')" % (
+    patientId, foodName, intake, date, calorie)
+    DB.update(sql)
+    return "ok"
 
 
 if __name__ == '__main__':

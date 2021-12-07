@@ -1,6 +1,6 @@
 
 $(function () {
-
+	//
 	// var data1 = new Array ();
     // var ds = new Array();
 	// var list = []
@@ -26,10 +26,13 @@ $(function () {
 	// }
 	//
     // $.plot($("#bar-chart"), ds, {
-    // 	colors: ["#F90", "#3C4049", "#666", "#BBB"]
+    // 	colors: ["#F90", "#3C4049", "#666", "#BBB"],
+	// 	xaxis: {
+    // 		mode: "categories"
+	// 	}
     // });
 
-	// //
+	//
 	$.getJSON('/historyWeight'
                 , function(info) {
 		console.log(info)

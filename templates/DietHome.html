@@ -7,16 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <link href="./../static/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="./../static/css/bootstrap-responsive.min.css" rel="stylesheet" />
+    <link href="../static/media/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../static/media/css/bootstrap-datetimepicker.css" media="screen"/>
+
+    <link href="../static/css/bootstrap-responsive.min.css" rel="stylesheet" />
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet" />
-    <link href="./../static/css/font-awesome.css" rel="stylesheet" />
+    <link href="../static/css/font-awesome.css" rel="stylesheet" />
 
-    <link href="./../static/css/adminia.css" rel="stylesheet" />
-    <link href="./../static/css/adminia-responsive.css" rel="stylesheet" />
+    <link href="../static/css/adminia.css" rel="stylesheet" />
 
-    <link href="./../static/css/pages/dashboard.css" rel="stylesheet" />
+    <link href="../static/css/pages/dashboard.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../static/media/css/jquery.dataTables.css">
+      <link rel="stylesheet" href="../static/media/css/jquery.datetimepicker.css"/>
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -27,6 +31,44 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 
 <body>
+<dialog id = "add_dialog"  style="border-radius: 15px;border-color: gray;width: 40%;margin-top: 5%;position:fixed;left:0px;top:0px;right:0px;bottom:0px;margin:auto;" >
+<div style="margin:0 auto;padding: 5% 15%;overflow: hidden;">
+    <table  class="table-striped form-horizontal" style="border-collapse:separate; border-spacing:0px 10px;width: 100%;table-layout: fixed;">
+        <tr>
+            <td>Time:</td>
+            <td>
+                <input type="text" value="2021-12-06T13:59:59" name="time-input" id = "time-input" />
+            </td>
+        </tr>
+        <tr>
+            <input style="display: none" type="text" name="e_id" id="e_id">
+            <td>Food Name:</td>
+            <td><input class="form-control" type="text"  name="food-input" id="food-input"></td>
+        </tr>
+        <tr >
+            <td>Intake:</td>
+            <td><input class="form-control" type="text"  name="intake-input" id="intake-input"></td>
+        </tr>
+        <tr >
+            <td>Calorie:</td>
+            <td><input class="form-control" type="text"  name="calorie-input" id="calorie-input"></td>
+        </tr>
+    </table>
+    <table style="border-collapse:separate; border-spacing:0px 10px;width: 100%;margin-top: 10%;text-align: center">
+        <tr>
+            <td ><button type="button"  class="btn btn-primary" id="cancel-button">Cancel</button></td>
+            <td><button type="submit"  class="btn btn-primary" id="submit-button">Submit</button></td>
+        </tr>
+
+
+    </table>
+
+
+</div>
+
+
+
+</dialog>
 
 <div class="navbar navbar-fixed-top">
 
@@ -120,53 +162,52 @@
 
 				<ul id="main-nav" class="nav nav-tabs nav-stacked">
 
-					<li class="active">
-						<a href="./">
-							<i class="icon-home"></i>
-							Dashboard
-						</a>
-					</li>
-
-					<li>
-						<a href="./faq.html">
+                    <li>
+						<a href="/PersonalPage">
 							<i class="icon-pushpin"></i>
-							FAQ
+							Vital signs
 						</a>
 					</li>
 
 					<li>
-						<a href="./plans.html">
-							<i class="icon-th-list"></i>
-							Pricing Plans
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Medication
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Diet
+						</a>
+					</li>
+
+					<li >
+						<a href="/Notehome">
+							<i class="icon-pushpin"></i>
+							Notes
 						</a>
 					</li>
 
 					<li>
-						<a href="./grid.html">
-							<i class="icon-th-large"></i>
-							Grid Layout
-							<span class="label label-warning pull-right">5</span>
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Search
 						</a>
 					</li>
 
 					<li>
-						<a href="./charts.html">
-							<i class="icon-signal"></i>
-							Charts
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Appointments
 						</a>
 					</li>
 
 					<li>
-						<a href="./account.html">
-							<i class="icon-user"></i>
-							User Account
-						</a>
-					</li>
-
-					<li>
-						<a href="./login.html">
-							<i class="icon-lock"></i>
-							Login
+						<a href="">
+							<i class="icon-pushpin"></i>
+							Communication
 						</a>
 					</li>
 
@@ -195,29 +236,29 @@
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>564</span>
-							Completed Sales
+							<span>{{ info['record_days']}}</span>
+							Record Days
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>423</span>
-							Pending Sales
+							<span>{{ info['max_weight'] }}kg</span>
+							Max Weight
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>96</span>
-							Returned Sales
+							<span>{{ info['min_weight'] }}kg</span>
+							Min Weight
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
 
 					<div class="stat-holder">
 						<div class="stat">
-							<span>2</span>
-							Chargebacks
+							<span>{{ info['avg_weight'] }}kg</span>
+							Average Weight
 						</div> <!-- /stat -->
 					</div> <!-- /stat-holder -->
 
@@ -227,20 +268,7 @@
 
 					<div class="widget-header">
 						<i class="icon-signal"></i>
-						<h3>History Weight</h3>
-					</div> <!-- /widget-header -->
-
-					<div class="widget-content">
-						<div id="bar-chart" class="chart-holder"></div> <!-- /bar-chart -->
-					</div> <!-- /widget-content -->
-
-				</div> <!-- /widget -->
-
-                <div class="widget">
-
-					<div class="widget-header">
-						<i class="icon-signal"></i>
-						<h3>History Calorie</h3>
+						<h3>Area Chart</h3>
 					</div> <!-- /widget-header -->
 
 					<div class="widget-content">
@@ -256,143 +284,36 @@
 					<div class="widget-header">
 						<i class="icon-th-list"></i>
 						<h3>Table</h3>
+                        <button id = "add_diet" style="float: right;margin-top: 6px;margin-right: 10px" class="btn btn-primary"> Add</button>
 					</div> <!-- /widget-header -->
 
-					<div class="widget-content">
+					<div class="widget-content" style="padding: 15px">
 
-						<table class="table table-striped table-bordered">
+						<table id="data_table"  class="table table-striped">
 							<thead>
 								<tr>
-									<th>#</th>
-									<th>First Name</th>
-									<th>Last Name</th>
-									<th>Username</th>
-									<th>Company</th>
-									<th>&nbsp;</th>
+									<th>ID</th>
+									<th>Food Name</th>
+									<th>Intake</th>
+									<th>Calorie(kcal)</th>
+									<th>Date</th>
+									<th>Operation</th>
 								</tr>
 							</thead>
 
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Michael</td>
-									<td>Jordan</td>
-									<td>@mjordan</td>
-									<td>Chicago Bulls</td>
+                            {% for item in info["diet_info"] %}
+                                <tr>
+									<td>{{ item[0] }}</td>
+									<td>{{ item[1] }}</td>
+									<td>{{ item[2] }}</td>
+									<td>{{ item[3] }}</td>
+									<td>{{ item[4] }}</td>
 									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
+										<button name="{{ item[0] }}" class="delete-btn btn btn-warning btn-xs">Del</button>
 									</td>
 								</tr>
-								<tr>
-									<td>2</td>
-									<td>Magic</td>
-									<td>Johnson</td>
-									<td>@mjohnson</td>
-									<td>Los Angeles Lakers</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>Charles</td>
-									<td>Barkley</td>
-									<td>@cbarkley</td>
-									<td>Phoenix Suns</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>Karl</td>
-									<td>Malone</td>
-									<td>@kmalone</td>
-									<td>Utah Jazz</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>David</td>
-									<td>Robinson</td>
-									<td>@drobinson</td>
-									<td>San Antonio Spurs</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>6</td>
-									<td>Reggie</td>
-									<td>Miller</td>
-									<td>@rmiller</td>
-									<td>Indiana Pacers</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td>Clyde</td>
-									<td>Drexler</td>
-									<td>@cdrexler</td>
-									<td>Portland Trail Blazers</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td>8</td>
-									<td>Hakeem</td>
-									<td>Olajuwon</td>
-									<td>@holajuwon</td>
-									<td>Houston Rockets</td>
-									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
-											<i class="icon-ok"></i>
-										</a>
-										<a href="javascript:;" class="btn btn-small">
-											<i class="icon-remove"></i>
-										</a>
-									</td>
-								</tr>
+                            {% endfor %}
 							</tbody>
 						</table>
 
@@ -459,23 +380,134 @@
 
 
 
+<script type="text/javascript" charset="utf8" src="../static/media/js/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="../static/media/js/jquery.dataTables.js"></script>
+<script src="../static/media/js/jquery.datetimepicker.min.js" ></script>
+<script src="../static/js/echarts.js"></script>
 
-<!-- Le javascript
 
 ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="./../static/js/jquery-1.7.2.min.js"></script>
-<script src="./../static/js/excanvas.min.js"></script>
-<script src="./../static/js/jquery.flot.min.js"></script>
-<script src="./../static/js/jquery.flot.categories.min.js"></script>
-<script src="./../static/js/jquery.flot.pie.js"></script>
-<script src="./../static/js/jquery.flot.orderBars.js"></script>
-<script src="./../static/js/jquery.flot.resize.js"></script>
+<script>
+    <!--第三步：初始化Datatables-->
+    $(document).ready(function () {
+        var table = $('#data_table').DataTable();
 
 
-<script src="./../static/js/bootstrap.js"></script>
-<script src="./../static/js/charts/bar.js"></script>
-<script src="./../static/js/charts/line.js"></script>
+        $('#data_table tbody').on( 'click', '.delete-btn', function () {
+            var data = table.row( $(this).parents('tr') ).data()
+            console.log(data[0])
+            table.row( $(this).parents('tr') ).remove().draw();
+        } );
+    });
+
+    $(function () {
+        $.getJSON('/historyWeight', function(info) {
+            var chartDom = document.getElementById('line-chart');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                    },
+                toolbox: {
+                    feature: {
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                    },
+                legend: {
+                    data: ['Weight', 'kcal']
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: info['x_data1'],
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    }
+                    ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'Weight',
+                        axisLabel: {
+                            formatter: '{value} kg'
+                        }
+                        },
+                    {
+                        type: 'value',
+                        name: 'kcal',
+                        axisLabel: {
+                            formatter: '{value} kcal'
+                        }
+                    }
+                    ],
+                series: [
+                    {
+                        name: 'Weight',
+                        type: 'bar',
+                        data: info['y_data']
+                    },
+
+                    {
+                        name: 'kcal',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: info['y_data1']
+                    }
+                    ]
+            };
+            option && myChart.setOption(option);
+            window.onresize = function () {
+                myChart.resize();
+            }
+        });
+    })
+
+    $("#add_diet").on('click', function () {      //点击添加按钮的事件
+    var x = document.getElementById("add_dialog");
+    x.style.zIndex = 9
+    x.show()
+    });
+
+    $("#cancel-button").on('click', function () {      //点击添加按钮的事件
+       var x = document.getElementById("add_dialog");
+       x.close()
+});
+    $(document).ready(function() {
+      $('#time-input').datetimepicker({
+                format:"Y-m-d H:i:s",
+            });
+  });
+    $("#submit-button").on('click', function () {      //点击添加按钮的事件
+        var time = $('#time-input').val();
+        var food = $('#food-input').val();
+        var calorie = $('#calorie-input').val();
+        var intake = $('#intake-input').val();
+         $.get('/addDiet?time=' + time + '&food=' + food + '&calorie=' + calorie+ '&intake=' + intake , function (res) {
+                if (res ==="ok") {
+                    var x = document.getElementById("add_dialog");
+                    x.close()
+                    var t = $('#data_table').DataTable();
+                    t.row.add($('<tr><td>' + 1+'</td><td>' + food +'</td> <td>' + intake+'</td> <td>' + calorie +'</td> <td>' + time+'</td> <td class="action-td"> <button name="1" class="delete-btn btn btn-warning btn-xs">Del</button> </td></tr>')).draw();
+
+                }else {
+                    alert("save false!")
+                }
+            })
+
+    });
+</script>
 
   </body>
 </html>
