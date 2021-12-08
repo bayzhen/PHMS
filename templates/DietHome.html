@@ -70,6 +70,37 @@
 
 </dialog>
 
+<dialog id = "add_dialog_weight"  style="border-radius: 15px;border-color: gray;width: 40%;margin-top: 5%;position:fixed;left:0px;top:0px;right:0px;bottom:0px;margin:auto;" >
+<div style="margin:0 auto;padding: 5% 15%;overflow: hidden;">
+    <table  class="table-striped form-horizontal" style="border-collapse:separate; border-spacing:0px 10px;width: 100%;table-layout: fixed;">
+        <tr>
+            <td>Time:</td>
+            <td>
+                <input type="text" value="2021-12-06T13:59:59" name="time-input" id = "time-input-weight" />
+            </td>
+        </tr>
+
+        <tr >
+            <td>Weight:</td>
+            <td><input class="form-control" type="text"  name="weight-input" id="weight-input"></td>
+        </tr>
+    </table>
+    <table style="border-collapse:separate; border-spacing:0px 10px;width: 100%;margin-top: 10%;text-align: center">
+        <tr>
+            <td ><button type="button"  class="btn btn-primary" id="cancel-button1">Cancel</button></td>
+            <td><button type="submit"  class="btn btn-primary" id="submit-button1">Submit</button></td>
+        </tr>
+
+
+    </table>
+
+
+</div>
+
+
+
+</dialog>
+
 <div class="navbar navbar-fixed-top">
 
 	<div class="navbar-inner">
@@ -82,7 +113,7 @@
 				<span class="icon-bar"></span>
 			</a>
 
-			<a class="brand" href="./">Adminia Admin</a>
+			<a class="brand">Personal Health Monitoring System</a>
 
 			<div class="nav-collapse">
 
@@ -96,7 +127,7 @@
 					<li class="dropdown">
 
 						<a data-toggle="dropdown" class="dropdown-toggle " href="#">
-							Rod Howard <b class="caret"></b>
+							Anna <b class="caret"></b>
 						</a>
 
 						<ul class="dropdown-menu">
@@ -139,7 +170,7 @@
 				<div class="account-container">
 
 					<div class="account-avatar">
-						<img src="./img/headshot.png" alt="" class="thumbnail" />
+						<img src="../static/img/headshot.jpg" alt="" class="thumbnail" />
 					</div> <!-- /account-avatar -->
 
 					<div class="account-details">
@@ -216,7 +247,7 @@
 				<hr />
 
 				<div class="sidebar-extra">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
+					<p>Good eating habits are the foundation of maintaining good health！</p>
 				</div> <!-- .sidebar-extra -->
 
 				<br />
@@ -268,7 +299,7 @@
 
 					<div class="widget-header">
 						<i class="icon-signal"></i>
-						<h3>Area Chart</h3>
+						<h3>Chart Show</h3>
 					</div> <!-- /widget-header -->
 
 					<div class="widget-content">
@@ -283,8 +314,9 @@
 
 					<div class="widget-header">
 						<i class="icon-th-list"></i>
-						<h3>Table</h3>
-                        <button id = "add_diet" style="float: right;margin-top: 6px;margin-right: 10px" class="btn btn-primary"> Add</button>
+						<h3>History Diet</h3>
+                        <button id = "add_weight" style="float: right;margin-top: 6px;margin-right: 10px" class="btn btn-primary"> Add Weight</button>
+                        <button id = "add_diet" style="float: right;margin-top: 6px;margin-right: 10px" class="btn btn-primary"> Add Diet</button>
 					</div> <!-- /widget-header -->
 
 					<div class="widget-content" style="padding: 15px">
@@ -292,7 +324,6 @@
 						<table id="data_table"  class="table table-striped">
 							<thead>
 								<tr>
-									<th>ID</th>
 									<th>Food Name</th>
 									<th>Intake</th>
 									<th>Calorie(kcal)</th>
@@ -308,9 +339,8 @@
 									<td>{{ item[1] }}</td>
 									<td>{{ item[2] }}</td>
 									<td>{{ item[3] }}</td>
-									<td>{{ item[4] }}</td>
 									<td class="action-td">
-										<button name="{{ item[0] }}" class="delete-btn btn btn-warning btn-xs">Del</button>
+										<button class="delete-btn btn btn-warning btn-xs">Del</button>
 									</td>
 								</tr>
                             {% endfor %}
@@ -320,44 +350,6 @@
 					</div> <!-- /widget-content -->
 
 				</div> <!-- /widget -->
-
-
-
-
-				<div class="row">
-
-					<div class="span5">
-
-						<div class="widget">
-
-							<div class="widget-header">
-								<h3>5 Column</h3>
-							</div> <!-- /widget-header -->
-
-							<div class="widget-content">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							</div> <!-- /widget-content -->
-
-						</div> <!-- /widget -->
-
-					</div> <!-- /span5 -->
-
-					<div class="span4">
-
-						<div class="widget">
-
-							<div class="widget-header">
-								<h3>4 Column</h3>
-							</div> <!-- /widget-header -->
-
-							<div class="widget-content">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-							</div> <!-- /widget-content -->
-
-						</div> <!-- /widget -->
-					</div> <!-- /span4 -->
-
-				</div> <!-- /row -->
 
 			</div> <!-- /span9 -->
 
@@ -373,10 +365,10 @@
 
 	<div class="container">
 		<hr />
-		<p>&copy; 2012 Go Ideate.</p>
+		<p>Team 1 Personal Health Monitoring System (PHMS)</p>
 	</div> <!-- /container -->
 
-</div> <!-- /footer -->
+</div> <!-- /footer --> <!-- /footer -->
 
 
 
@@ -395,12 +387,21 @@
 
         $('#data_table tbody').on( 'click', '.delete-btn', function () {
             var data = table.row( $(this).parents('tr') ).data()
+            $.get('/deleteDiet?food=' + data[0] + '&intake=' + data[1] +'&time=' + data[3] , function (res) {
+                if (res ==="ok") {
+                    var x = document.getElementById("add_dialog_weight");
+                    x.close()
+                    refreshChart()
+                }else {
+                    alert("save false!")
+                }
+            })
             console.log(data[0])
             table.row( $(this).parents('tr') ).remove().draw();
         } );
     });
 
-    $(function () {
+    function refreshChart(){
         $.getJSON('/historyWeight', function(info) {
             var chartDom = document.getElementById('line-chart');
             var myChart = echarts.init(chartDom);
@@ -430,7 +431,7 @@
                 xAxis: [
                     {
                         type: 'category',
-                        data: info['x_data1'],
+                        data: info['x'],
                         axisPointer: {
                             type: 'shadow'
                         }
@@ -456,14 +457,14 @@
                     {
                         name: 'Weight',
                         type: 'bar',
-                        data: info['y_data']
+                        data: info['y_data1']
                     },
 
                     {
                         name: 'kcal',
                         type: 'line',
                         yAxisIndex: 1,
-                        data: info['y_data1']
+                        data: info['y_data']
                     }
                     ]
             };
@@ -472,10 +473,18 @@
                 myChart.resize();
             }
         });
-    })
+
+    }
+
+    refreshChart();
 
     $("#add_diet").on('click', function () {      //点击添加按钮的事件
     var x = document.getElementById("add_dialog");
+    x.style.zIndex = 9
+    x.show()
+    });
+    $("#add_weight").on('click', function () {      //点击添加按钮的事件
+    var x = document.getElementById("add_dialog_weight");
     x.style.zIndex = 9
     x.show()
     });
@@ -484,8 +493,17 @@
        var x = document.getElementById("add_dialog");
        x.close()
 });
+    $("#cancel-button1").on('click', function () {      //点击添加按钮的事件
+       var y = document.getElementById("add_dialog_weight");
+       y.close()
+});
     $(document).ready(function() {
       $('#time-input').datetimepicker({
+                format:"Y-m-d H:i:s",
+            });
+  });
+    $(document).ready(function() {
+      $('#time-input-weight').datetimepicker({
                 format:"Y-m-d H:i:s",
             });
   });
@@ -499,8 +517,23 @@
                     var x = document.getElementById("add_dialog");
                     x.close()
                     var t = $('#data_table').DataTable();
-                    t.row.add($('<tr><td>' + 1+'</td><td>' + food +'</td> <td>' + intake+'</td> <td>' + calorie +'</td> <td>' + time+'</td> <td class="action-td"> <button name="1" class="delete-btn btn btn-warning btn-xs">Del</button> </td></tr>')).draw();
+                    t.row.add($('<tr><td>' + food +'</td> <td>' + intake+'</td> <td>' + calorie +'</td> <td>' + time+'</td> <td class="action-td"> <button name="1" class="delete-btn btn btn-warning btn-xs">Del</button> </td></tr>')).draw();
 
+                }else {
+                    alert("save false!")
+                }
+            })
+
+    });
+
+    $("#submit-button1").on('click', function () {      //点击添加按钮的事件
+        var time = $('#time-input-weight').val();
+        var weight = $('#weight-input').val();
+         $.get('/addWeight?time=' + time + '&weight=' + weight , function (res) {
+                if (res ==="ok") {
+                    var x = document.getElementById("add_dialog_weight");
+                    x.close()
+                    refreshChart()
                 }else {
                     alert("save false!")
                 }

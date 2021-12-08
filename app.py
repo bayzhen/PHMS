@@ -330,12 +330,11 @@ def updateNote():
 def getHistoryWeight(patientId, recentDays):
     sql = "select weight,date from weight_history where patientId=%d order by date limit %d" % (patientId, recentDays)
     result = DB.select(sql)
-    x_data = []
-    y_data = []
+    day_weight_dict = {}
     for item in result:
-        x_data.append(str(item[1]).split(" ")[0])
-        y_data.append(float(item[0]))
-    return x_data,y_data
+        day = str(item[1]).split(" ")[0]
+        day_weight_dict.update({day: float(item[0])})
+    return day_weight_dict
 
 
 def getHistoryDietCalorie(patientId, recentDays=30):
@@ -348,12 +347,7 @@ def getHistoryDietCalorie(patientId, recentDays=30):
             day_calorie_dict[day] += float(item[0])
         else:
             day_calorie_dict.update({day: float(item[0])})
-    x_data = []
-    y_data = []
-    for key in day_calorie_dict:
-        x_data.append(key)
-        y_data.append(day_calorie_dict[key])
-    return x_data,y_data
+    return day_calorie_dict
 
 
 def getRecodeDays(patientId):
@@ -376,7 +370,7 @@ def getMaxMinWeight(patientId):
 
 
 def getAllDietRecord(patientId):
-    sql = "select dietId,foodName, intake, calorie, date from diet where patientId=%d order by date desc" % patientId
+    sql = "select foodName, intake, calorie, date from diet where patientId=%d order by date desc" % patientId
     result = DB.select(sql)
     data = []
     for item in result:
@@ -403,9 +397,23 @@ def dietHome():
 @app.route('/historyWeight')
 def historyWeight():
     patient_id = 1
-    x_data,y_data = getHistoryWeight(patient_id, 30)
-    x_data1, y_data1 = getHistoryDietCalorie(patient_id, 30)
-    return json.dumps({"x_data": x_data,"y_data":y_data, "x_data1":x_data1, 'y_data1':y_data1 })
+    day_weight_dict = getHistoryWeight(patient_id, 30)
+    day_calorie_dict = getHistoryDietCalorie(patient_id, 30)
+    calorie = []
+    weight = []
+    days = list(set(list(day_weight_dict.keys())).union(set(list(day_calorie_dict.keys()))))
+    days.sort()
+    for day in days:
+        if day in day_calorie_dict:
+            calorie.append(day_calorie_dict[day])
+        else:
+            calorie.append(None)
+        if day in day_weight_dict:
+            weight.append(day_weight_dict[day])
+        else:
+            weight.append(None)
+
+    return json.dumps({"y_data":calorie, 'y_data1': weight,'x':days })
 
 
 @app.route("/addDiet")
@@ -417,6 +425,29 @@ def addDiet():
     calorie = request.args.get("calorie")
     sql = "insert into diet(patientId,foodName, intake, date, calorie) values (%d, '%s','%s','%s','%s')" % (
     patientId, foodName, intake, date, calorie)
+    DB.update(sql)
+    return "ok"
+
+
+@app.route("/deleteDiet")
+def deleteDiet():
+    patientId = 1
+    foodName = request.args.get("food")
+    intake = request.args.get("intake")
+    date = request.args.get("time")
+    sql = "delete from diet where patientId = %d and foodName='%s' and intake='%s' and date='%s'" % (
+    patientId, foodName, intake, date)
+    DB.update(sql)
+    return "ok"
+
+
+@app.route("/addWeight")
+def addWeight():
+    patientId = 1
+    date = request.args.get("time")
+    weight = request.args.get("weight")
+    sql = "insert into weight_history(patientId,weight,date) values (%d,'%s','%s')" % (
+    patientId, weight,date)
     DB.update(sql)
     return "ok"
 
