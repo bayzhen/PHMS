@@ -451,6 +451,167 @@ def addWeight():
     DB.update(sql)
     return "ok"
 
+@app.route('/MedicationHome/')
+def MedicationHome():
+    patient = request.args.get("name")
+    conn = pymysql.connect(**config)
+    cur = conn.cursor()
+    sql = "SELECT * FROM `medication`"
+    cur.execute(sql)
+    medications = cur.fetchall()
+    conn.close()
+    return render_template('MedicationHome.html', medications=medications)
+
+
+@app.route('/MedicationAdd', methods=['POST', 'GET'])
+def MedicationAdd():
+    patient = request.args.get("name")
+    if request.method == 'POST':
+        disease = request.form['disease']
+        doctor = request.form['doctor']
+        nextDate = request.form['nextDate']
+        temp = request.form['temp']
+        print('temp: ', temp)
+
+        medicines = temp.split('/')
+        medicines.remove("")
+        print(medicines)
+        print(len(medicines))
+        nums = len(medicines)
+
+        date = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        flag = date
+        sql = "INSERT INTO medication(disease, doctor, date, nextDate, flag) values('%s', '%s', '%s', '%s', '%s')" % (disease, doctor, date, nextDate, flag)
+        conn = pymysql.connect(**config)
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.commit()
+
+        sql = "SELECT medicationId FROM `medication` WHERE flag=%s" % (flag)
+        conn = pymysql.connect(**config)
+        cur = conn.cursor()
+        cur.execute(sql)
+        medicationId = cur.fetchone()
+        print(medicationId)
+
+        for i in range(nums):
+            m = medicines[i].split(',')
+            medicine = m[0]
+            type = m[1]
+            comment = m[2]
+            sql = "INSERT INTO medication_medicine(medicationId, medicine, type, comment) values('%s', '%s', '%s', '%s')" % (medicationId[0], medicine, type, comment)
+            print(sql)
+            conn = pymysql.connect(**config)
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
+
+        conn.close()
+        return redirect(url_for('MedicationHome'))
+    else:
+        return render_template('MedicationAdd.html')
+
+
+@app.route('/MedicationDetail')
+def MedicationDetail():
+    medicationId = request.args.get('medicationId')
+    print(medicationId)
+    conn = pymysql.connect(**config)
+    cur = conn.cursor()
+    sql = "SELECT * FROM `medication` WHERE medicationId=%s" % (medicationId)
+    cur.execute(sql)
+    medication = cur.fetchone()
+    print(medication)
+
+    sql = "SELECT * FROM `medication_medicine` WHERE medicationId=%s" % (medicationId)
+    cur.execute(sql)
+    medicines = cur.fetchall()
+
+    medicine=[]
+
+    conn.close()
+    return render_template('MedicationDetail.html', medication=medication, medicines=medicines, medicine=medicine)
+
+
+@app.route('/MedicationEdit', methods=['POST', 'GET'])
+def MedicationEdit():
+    if request.method == 'POST':
+        medicationId = request.form["medicationId"]
+        disease = request.form['disease']
+        doctor = request.form['doctor']
+        nextDate = request.form['nextDate']
+        sql = "UPDATE medication SET disease='%s', doctor='%s', nextDate='%s' WHERE medicationId=%s" % (disease, doctor, nextDate, medicationId)
+        print(sql)
+        conn = pymysql.connect(**config)
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.commit()
+        conn.close()
+    return redirect(url_for('MedicationHome'))
+
+@app.route('/MedicationDel', methods=['POST', 'GET'])
+def MedicationDel():
+    if request.method == 'POST':
+        medicationId = request.get_json()['medicationId']
+        sql = "DELETE FROM medication WHERE medicationId=%s " % (medicationId)
+        print(sql)
+        conn = pymysql.connect(**config)
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.commit()
+        conn.close()
+        return 'ok'
+
+@app.route('/MedicineDel', methods=['POST', 'GET'])
+def MedicineDel():
+    if request.method == 'POST':
+        mmId = request.get_json()['mmId']
+        sql = "DELETE FROM medication_medicine WHERE mmId=%s " % (mmId)
+        conn = pymysql.connect(**config)
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.commit()
+        conn.close()
+        return 'ok'
+
+@app.route('/MedicineEdit', methods=['POST', 'GET'])
+def MedicineEdit():
+    mmId = request.args.get('mmId')
+    medicationId = request.args.get('medicationId')
+    print(mmId, medicationId)
+    if request.method == 'POST':
+        mmId = request.form['mmId']
+        medicationId = request.form['meId']
+        medicine = request.form['medicine']
+        type = request.form['type']
+        comment = request.form['comment']
+        sql = "UPDATE medication_medicine SET medicine='%s', type='%s', comment='%s' WHERE mmId=%s" % (medicine, type, comment, mmId)
+        print(sql)
+        conn = pymysql.connect(**config)
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.commit()
+        conn.close()
+        return redirect(url_for('MedicationHome'))
+    else:
+        sql = "SELECT * FROM `medication_medicine` WHERE mmId=%s" % (mmId)
+        conn = pymysql.connect(**config)
+        cur = conn.cursor()
+        cur.execute(sql)
+        medicine = cur.fetchone()
+
+        sql = "SELECT * FROM `medication` WHERE medicationId=%s" % (medicationId)
+        cur.execute(sql)
+        medication = cur.fetchone()
+
+        sql = "SELECT * FROM `medication_medicine` WHERE medicationId=%s" % (medicationId)
+        cur.execute(sql)
+        medicines = cur.fetchall()
+
+        conn.close()
+        return render_template('MedicationDetail.html', medication=medication, medicines=medicines, medicine=medicine)
+
+
 
 if __name__ == '__main__':
     app.run()
