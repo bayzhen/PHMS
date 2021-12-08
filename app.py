@@ -2,10 +2,10 @@ import os
 from itertools import chain
 
 import pymysql
-from flask import Flask, render_template, request, session, jsonify
+from flask import Flask, render_template, request, session, jsonify, redirect, url_for
 from db import connmysql
 import json
-
+import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 DB = connmysql(user="root", password="12345678", database="phms")
